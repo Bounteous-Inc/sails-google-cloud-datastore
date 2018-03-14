@@ -1,6 +1,6 @@
 {
   "name": "sails-google-cloud-datastore",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Google Cloud Datastore adapter for Sails.js/Waterline.",
   "main": "./lib/",
   "scripts": {
