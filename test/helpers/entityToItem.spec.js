@@ -1,7 +1,8 @@
+/*eslint camelcase: ["error", {properties: "never"}]*/
 const assert = require('assert');
 const GoogleCloudDatastore = require('@google-cloud/datastore');
-const gcDatastoreInstance = new GoogleCloudDatastore({projectId: 'foo'});
-const KEY_SYMBOL = gcDatastoreInstance.KEY;
+const ds = new GoogleCloudDatastore({projectId: 'foo'});
+const KEY_SYMBOL = ds.KEY;
 const entityToItem = require('../../lib/helpers/entityToItem.js');
 
 describe('entityToItem()', () => {
@@ -30,7 +31,7 @@ describe('entityToItem()', () => {
       last_name: 'Bar'
     };
 
-    key = gcDatastoreInstance.key(['first_name', 'Foo']);
+    key = ds.key(['first_name', 'Foo']);
     entity[KEY_SYMBOL] = key;
 
   });
@@ -52,7 +53,7 @@ describe('entityToItem()', () => {
 
     model.attributes.fname.type = 'number';
 
-    key = gcDatastoreInstance.key(['first_name', '1']);
+    key = ds.key(['first_name', '1']);
     entity[KEY_SYMBOL] = key;
 
     const outcome = entityToItem({entity, model});

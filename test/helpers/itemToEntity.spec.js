@@ -1,13 +1,14 @@
+/*eslint camelcase: ["error", {properties: "never"}]*/
 const assert = require('assert');
 const GoogleCloudDatastore = require('@google-cloud/datastore');
-const gcDatastoreInstance = new GoogleCloudDatastore({projectId: 'foo'});
-const KEY_SYMBOL = gcDatastoreInstance.KEY;
+const ds = new GoogleCloudDatastore({projectId: 'foo'});
+const KEY_SYMBOL = ds.KEY;
 const itemToEntity = require('../../lib/helpers/itemToEntity.js');
 
 describe('itemToEntity()', () => {
 
-  const tableName = 'users';
   const model = {
+    tableName: 'users',
     primaryKey: 'fname',
     attributes: {
       fname: {
@@ -34,13 +35,13 @@ describe('itemToEntity()', () => {
     const expected = {
       last_name: 'Bar'
     };
-    const key = gcDatastoreInstance.key(['first_name', 'Foo']);
+    const key = ds.key(['first_name', 'Foo']);
     expected[KEY_SYMBOL] = key;
 
-    const outcome = itemToEntity({item, model, tableName, gcDatastoreInstance});
+    const outcome = itemToEntity({item, model, ds});
 
     assert(outcome[KEY_SYMBOL]);
-    assert.equal(outcome[KEY_SYMBOL].path[0], tableName);
+    assert.equal(outcome[KEY_SYMBOL].path[0], model.tableName);
     assert.equal(outcome[KEY_SYMBOL].path[1], item.first_name);
     assert.equal(outcome.last_name, expected.last_name);
 
@@ -51,13 +52,13 @@ describe('itemToEntity()', () => {
     item.first_name = null;
 
     const expected = {};
-    const key = gcDatastoreInstance.key(['first_name', 'Foo']);
+    const key = ds.key(['first_name', 'Foo']);
     expected[KEY_SYMBOL] = key;
 
-    const outcome = itemToEntity({item, model, tableName, gcDatastoreInstance});
+    const outcome = itemToEntity({item, model, ds});
 
     assert(outcome[KEY_SYMBOL]);
-    assert.equal(outcome[KEY_SYMBOL].path[0], tableName);
+    assert.equal(outcome[KEY_SYMBOL].path[0], model.tableName);
     assert.equal(outcome[KEY_SYMBOL].path[1], undefined);
 
   });
@@ -66,7 +67,7 @@ describe('itemToEntity()', () => {
 
     item.last_name = undefined;
 
-    const outcome = itemToEntity({item, model, tableName, gcDatastoreInstance});
+    const outcome = itemToEntity({item, model, ds});
 
     assert.deepEqual(Object.keys(outcome), []);
 
@@ -79,10 +80,10 @@ describe('itemToEntity()', () => {
     const expected = {
       last_name: '__NULL__'
     };
-    const key = gcDatastoreInstance.key(['first_name', 'Foo']);
+    const key = ds.key(['first_name', 'Foo']);
     expected[KEY_SYMBOL] = key;
 
-    const outcome = itemToEntity({item, model, tableName, gcDatastoreInstance});
+    const outcome = itemToEntity({item, model, ds});
 
     assert.equal(outcome.last_name, expected.last_name);
 
@@ -95,10 +96,10 @@ describe('itemToEntity()', () => {
     const expected = {
       last_name: '"__NULL__"'
     };
-    const key = gcDatastoreInstance.key(['first_name', 'Foo']);
+    const key = ds.key(['first_name', 'Foo']);
     expected[KEY_SYMBOL] = key;
 
-    const outcome = itemToEntity({item, model, tableName, gcDatastoreInstance});
+    const outcome = itemToEntity({item, model, ds});
 
     assert.equal(outcome.last_name, expected.last_name);
 

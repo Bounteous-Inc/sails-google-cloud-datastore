@@ -1,3 +1,4 @@
+/*eslint camelcase: ["error", {properties: "never"}]*/
 const assert = require('assert');
 const parseWhereClause = require('../../lib/helpers/parseWhereClause.js');
 
