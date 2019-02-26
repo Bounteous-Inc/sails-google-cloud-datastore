@@ -1,7 +1,7 @@
 /*eslint camelcase: ["error", {properties: "never"}]*/
 const assert = require('assert');
-const GoogleCloudDatastore = require('@google-cloud/datastore');
-const ds = new GoogleCloudDatastore({projectId: 'foo'});
+const { Datastore } = require('@google-cloud/datastore');
+const ds = new Datastore({projectId: 'foo'});
 const KEY_SYMBOL = ds.KEY;
 const itemToEntity = require('../../lib/helpers/itemToEntity.js');
 
